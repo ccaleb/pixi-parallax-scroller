@@ -1,0 +1,53 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Endless Runner Game Demo</title>
+		<style>
+      		body { background-color: #000000; }
+      		canvas { background-color: #222222; }
+    	</style>
+	</head>
+	<body onload="init();">
+		<div align="center">
+			<canvas id="game-canvas" width="512" height="384"></canvas>
+		</div>
+		<script src="pixi.js-master/bin/pixi.dev.js"></script>
+		<script>
+			function init() {
+				stage = new PIXI.Stage(0x66FF99);
+   				renderer = new PIXI.autoDetectRenderer(
+   					512,
+   					384,
+   					document.getElementById("game-canvas")
+   				);
+
+   				var farTexture = PIXI.Texture.fromImage("resources/bg-far.png");	
+   				far = new PIXI.TilingSprite(farTexture, 512, 256);
+   				far.position.x = 0;
+   				far.position.y = 0;
+               far.tilePosition.x = 0;
+               far.tilePosition.y = 0;
+   				stage.addChild(far);
+
+   				var midTexture = PIXI.Texture.fromImage("resources/bg-mid.png");
+   				mid = new PIXI.TilingSprite(midTexture, 512, 256);
+   				mid.position.x = 0;
+   				mid.position.y = 128;
+               mid.tilePosition.x = 0;
+               mid.tilePosition.y = 0;
+   				stage.addChild(mid);
+
+   				requestAnimFrame(update);
+			}
+
+         function update() {
+            far.tilePosition.x -= 0.128;
+            mid.tilePosition.x -= 0.64;
+
+            renderer.render(stage);
+
+            requestAnimFrame(update);
+         }
+		</script>
+	</body>
+</html>
