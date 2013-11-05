@@ -7,4 +7,4 @@ The accompanying *[source code](https://github.com/ccaleb/pixi-parallax-scroller
 
 The accompanying *[source code](http://www.yeahbutisitflash.com/?p=5666)* for part 2 of *[Building a Parallax Scrolling with Pixi.js](http://www.yeahbutisitflash.com/?p=5226)*.
 
-Artwork by *[Marcus Gray](http://gray-marcus.wix.com/grayillustration).
+Artwork by *[Marcus Gray](http://gray-marcus.wix.com/grayillustration)*.
