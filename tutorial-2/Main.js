@@ -16,7 +16,7 @@ Main.SCROLL_SPEED = 5;
 
 Main.prototype.update = function() {
 	this.scroller.moveViewportXBy(Main.SCROLL_SPEED);
-    this.renderer.render(this.stage);
+	this.renderer.render(this.stage);
 	requestAnimFrame(this.update.bind(this));
 };
 

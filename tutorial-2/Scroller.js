@@ -1,11 +1,11 @@
 function Scroller(stage) {
 	this.far = new Far();
-    stage.addChild(this.far);
+	stage.addChild(this.far);
 
-    this.mid = new Mid();
-    stage.addChild(this.mid);
+	this.mid = new Mid();
+	stage.addChild(this.mid);
 
-    this.viewportX = 0;
+	this.viewportX = 0;
 }
 
 Scroller.prototype.setViewportX = function(viewportX) {
