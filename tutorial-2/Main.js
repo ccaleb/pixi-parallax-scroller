@@ -6,7 +6,6 @@ function Main() {
 		document.getElementById("game-canvas")
 	);
 
-	this.viewportX = 0;
 	this.scroller = new Scroller(this.stage);
 
 	requestAnimFrame(this.update.bind(this));
