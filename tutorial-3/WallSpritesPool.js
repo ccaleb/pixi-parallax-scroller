@@ -101,6 +101,7 @@ WallSpritesPool.prototype.addDecorationSprites = function(amount, frameId) {
 	{
   		var sprite = PIXI.Sprite.fromFrame(frameId);
   		this.decorations.push(sprite);
+  		
   	}
 };
 
