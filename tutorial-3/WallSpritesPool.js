@@ -100,9 +100,7 @@ WallSpritesPool.prototype.addDecorationSprites = function(amount, frameId) {
 	for (var i = 0; i < amount; i++)
 	{
   		var sprite = PIXI.Sprite.fromFrame(frameId);
-  		this.decorations.push(sprite);
-  		
-  	}
+  		this.decorations.push(sprite);}
 };
 
 WallSpritesPool.prototype.addFrontEdgeSprites = function(amount, frameId) {
