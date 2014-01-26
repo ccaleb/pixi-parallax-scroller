@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Endless Runner Game Demo</title>
+		<style>
+			body { background-color: #000000; }
+			canvas { background-color: #222222; }
+		</style>
+	</head>
+	<body onload="init();">
+		<div align="center">
+			<canvas id="game-canvas" width="512" height="384"></canvas>
+		</div>
+		<script src="pixi.js-master/bin/pixi.dev.js"></script>
+		<script src="Far.js"></script>
+		<script src="Mid.js"></script>
+		<script src="Scroller.js"></script>
+		<script src="WallSpritesPool.js"></script>
+		<script src="SliceType.js"></script>
+		<script src="WallSlice.js"></script>
+		<script src="Walls.js"></script>
+		<script src="MapBuilder.js"></script>
+		<script src="Main.js"></script>
+		<script>
+			function init() {
+				main = new Main();
+			}
+		</script>
+	</body>
+</html>
