@@ -9,4 +9,6 @@ The accompanying *[source code](https://github.com/ccaleb/pixi-parallax-scroller
 
 The accompanying *[source code](https://github.com/ccaleb/pixi-parallax-scroller/tree/master/tutorial-3)* for part 3 of *[Building a Parallax Scrolling with Pixi.js](http://www.yeahbutisitflash.com/?p=6496)*.
 
+The accompanying *[source code](https://github.com/ccaleb/pixi-parallax-scroller/tree/master/tutorial-4)* for part 4 of *[Building a Parallax Scrolling with Pixi.js](http://www.yeahbutisitflash.com/?p=6938)*.
+
 Artwork by *[Marcus Gray](http://gray-marcus.wix.com/grayillustration)*.
