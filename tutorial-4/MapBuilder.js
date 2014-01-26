@@ -91,7 +91,7 @@ MapBuilder.prototype.createSteppedWallSpan = function(
 
 	this.createWallSpan(heightIndex, spanALength, false, true);
 	this.addWallStep(heightIndex - 2);
- 	this.createWallSpan(heightIndex - 2, spanBLength - 1, true, false);
+	this.createWallSpan(heightIndex - 2, spanBLength - 1, true, false);
 };
 
 MapBuilder.prototype.addWallFront = function(heightIndex) {
