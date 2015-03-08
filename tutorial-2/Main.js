@@ -3,7 +3,7 @@ function Main() {
 	this.renderer = new PIXI.autoDetectRenderer(
 		512,
 		384,
-		document.getElementById("game-canvas")
+		{view:document.getElementById("game-canvas")}
 	);
 
 	this.scroller = new Scroller(this.stage);

@@ -3,10 +3,10 @@
  */
 
 /**
- * The xml loader is used to load in XML bitmap font data ("xml" or "fnt")
+ * The xml loader is used to load in XML bitmap font data ('xml' or 'fnt')
  * To generate the data you can use http://www.angelcode.com/products/bmfont/
  * This loader will also load the image file as the data.
- * When loaded this class will dispatch a "loaded" event
+ * When loaded this class will dispatch a 'loaded' event
  *
  * @class BitmapFontLoader
  * @uses EventTarget
@@ -16,13 +16,6 @@
  */
 PIXI.BitmapFontLoader = function(url, crossorigin)
 {
-    /*
-     * i use texture packer to load the assets..
-     * http://www.codeandweb.com/texturepacker
-     * make sure to set the format as "JSON"
-     */
-    PIXI.EventTarget.call(this);
-
     /**
      * The url of the bitmap font data
      *
@@ -46,19 +39,20 @@ PIXI.BitmapFontLoader = function(url, crossorigin)
      * @type String
      * @readOnly
      */
-    this.baseUrl = url.replace(/[^\/]*$/, "");
+    this.baseUrl = url.replace(/[^\/]*$/, '');
 
     /**
      * [read-only] The texture of the bitmap font
      *
-     * @property baseUrl
-     * @type String
+     * @property texture
+     * @type Texture
      */
     this.texture = null;
 };
 
 // constructor
 PIXI.BitmapFontLoader.prototype.constructor = PIXI.BitmapFontLoader;
+PIXI.EventTarget.mixin(PIXI.BitmapFontLoader.prototype);
 
 /**
  * Loads the XML font data
@@ -67,74 +61,81 @@ PIXI.BitmapFontLoader.prototype.constructor = PIXI.BitmapFontLoader;
  */
 PIXI.BitmapFontLoader.prototype.load = function()
 {
-    this.ajaxRequest = new XMLHttpRequest();
-    var scope = this;
-    this.ajaxRequest.onreadystatechange = function()
-    {
-        scope.onXMLLoaded();
-    };
+    this.ajaxRequest = new PIXI.AjaxRequest();
+    this.ajaxRequest.onreadystatechange = this.onXMLLoaded.bind(this);
 
-    this.ajaxRequest.open("GET", this.url, true);
-    if (this.ajaxRequest.overrideMimeType) this.ajaxRequest.overrideMimeType("application/xml");
-    this.ajaxRequest.send(null)
+    this.ajaxRequest.open('GET', this.url, true);
+    if (this.ajaxRequest.overrideMimeType) this.ajaxRequest.overrideMimeType('application/xml');
+    this.ajaxRequest.send(null);
 };
 
 /**
- * Invoked when XML file is loaded, parses the data
+ * Invoked when the XML file is loaded, parses the data.
  *
  * @method onXMLLoaded
  * @private
  */
 PIXI.BitmapFontLoader.prototype.onXMLLoaded = function()
 {
-    if (this.ajaxRequest.readyState == 4)
+    if (this.ajaxRequest.readyState === 4)
     {
-        if (this.ajaxRequest.status == 200 || window.location.href.indexOf("http") == -1)
+        if (this.ajaxRequest.status === 200 || window.location.protocol.indexOf('http') === -1)
         {
-            var textureUrl = this.baseUrl + this.ajaxRequest.responseXML.getElementsByTagName("page")[0].attributes.getNamedItem("file").nodeValue;
+            var responseXML = this.ajaxRequest.responseXML;
+            if(!responseXML || /MSIE 9/i.test(navigator.userAgent) || navigator.isCocoonJS) {
+                if(typeof(window.DOMParser) === 'function') {
+                    var domparser = new DOMParser();
+                    responseXML = domparser.parseFromString(this.ajaxRequest.responseText, 'text/xml');
+                } else {
+                    var div = document.createElement('div');
+                    div.innerHTML = this.ajaxRequest.responseText;
+                    responseXML = div;
+                }
+            }
+
+            var textureUrl = this.baseUrl + responseXML.getElementsByTagName('page')[0].getAttribute('file');
             var image = new PIXI.ImageLoader(textureUrl, this.crossorigin);
             this.texture = image.texture.baseTexture;
 
             var data = {};
-            var info = this.ajaxRequest.responseXML.getElementsByTagName("info")[0];
-            var common = this.ajaxRequest.responseXML.getElementsByTagName("common")[0];
-            data.font = info.attributes.getNamedItem("face").nodeValue;
-            data.size = parseInt(info.attributes.getNamedItem("size").nodeValue, 10);
-            data.lineHeight = parseInt(common.attributes.getNamedItem("lineHeight").nodeValue, 10);
+            var info = responseXML.getElementsByTagName('info')[0];
+            var common = responseXML.getElementsByTagName('common')[0];
+            data.font = info.getAttribute('face');
+            data.size = parseInt(info.getAttribute('size'), 10);
+            data.lineHeight = parseInt(common.getAttribute('lineHeight'), 10);
             data.chars = {};
 
             //parse letters
-            var letters = this.ajaxRequest.responseXML.getElementsByTagName("char");
+            var letters = responseXML.getElementsByTagName('char');
 
             for (var i = 0; i < letters.length; i++)
             {
-                var charCode = parseInt(letters[i].attributes.getNamedItem("id").nodeValue, 10);
+                var charCode = parseInt(letters[i].getAttribute('id'), 10);
 
-                var textureRect = {
-                    x: parseInt(letters[i].attributes.getNamedItem("x").nodeValue, 10),
-                    y: parseInt(letters[i].attributes.getNamedItem("y").nodeValue, 10),
-                    width: parseInt(letters[i].attributes.getNamedItem("width").nodeValue, 10),
-                    height: parseInt(letters[i].attributes.getNamedItem("height").nodeValue, 10)
-                };
-                PIXI.TextureCache[charCode] = new PIXI.Texture(this.texture, textureRect);
+                var textureRect = new PIXI.Rectangle(
+                    parseInt(letters[i].getAttribute('x'), 10),
+                    parseInt(letters[i].getAttribute('y'), 10),
+                    parseInt(letters[i].getAttribute('width'), 10),
+                    parseInt(letters[i].getAttribute('height'), 10)
+                );
 
                 data.chars[charCode] = {
-                    xOffset: parseInt(letters[i].attributes.getNamedItem("xoffset").nodeValue, 10),
-                    yOffset: parseInt(letters[i].attributes.getNamedItem("yoffset").nodeValue, 10),
-                    xAdvance: parseInt(letters[i].attributes.getNamedItem("xadvance").nodeValue, 10),
+                    xOffset: parseInt(letters[i].getAttribute('xoffset'), 10),
+                    yOffset: parseInt(letters[i].getAttribute('yoffset'), 10),
+                    xAdvance: parseInt(letters[i].getAttribute('xadvance'), 10),
                     kerning: {},
-                    texture:new PIXI.Texture(this.texture, textureRect)
+                    texture: PIXI.TextureCache[charCode] = new PIXI.Texture(this.texture, textureRect)
 
                 };
             }
 
             //parse kernings
-            var kernings = this.ajaxRequest.responseXML.getElementsByTagName("kerning");
+            var kernings = responseXML.getElementsByTagName('kerning');
             for (i = 0; i < kernings.length; i++)
             {
-               var first = parseInt(kernings[i].attributes.getNamedItem("first").nodeValue, 10);
-               var second = parseInt(kernings[i].attributes.getNamedItem("second").nodeValue, 10);
-               var amount = parseInt(kernings[i].attributes.getNamedItem("amount").nodeValue, 10);
+                var first = parseInt(kernings[i].getAttribute('first'), 10);
+                var second = parseInt(kernings[i].getAttribute('second'), 10);
+                var amount = parseInt(kernings[i].getAttribute('amount'), 10);
 
                 data.chars[second].kerning[first] = amount;
 
@@ -142,10 +143,7 @@ PIXI.BitmapFontLoader.prototype.onXMLLoaded = function()
 
             PIXI.BitmapText.fonts[data.font] = data;
 
-            var scope = this;
-            image.addEventListener("loaded", function() {
-                scope.onLoaded();
-            });
+            image.addEventListener('loaded', this.onLoaded.bind(this));
             image.load();
         }
     }
@@ -159,5 +157,5 @@ PIXI.BitmapFontLoader.prototype.onXMLLoaded = function()
  */
 PIXI.BitmapFontLoader.prototype.onLoaded = function()
 {
-    this.dispatchEvent({type: "loaded", content: this});
+    this.emit('loaded', { content: this });
 };
