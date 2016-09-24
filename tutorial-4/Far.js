@@ -1,6 +1,6 @@
 function Far() {
 	var texture = PIXI.Texture.fromImage("resources/bg-far.png");
-	PIXI.TilingSprite.call(this, texture, 512, 256);
+	PIXI.extras.TilingSprite.call(this, texture, 512, 256);
 
 	this.position.x = 0;
 	this.position.y = 0;
@@ -10,8 +10,7 @@ function Far() {
 	this.viewportX = 0;
 }
 
-Far.constructor = Far;
-Far.prototype = Object.create(PIXI.TilingSprite.prototype);
+Far.prototype = Object.create(PIXI.extras.TilingSprite.prototype);
 
 Far.DELTA_X = 0.064;
 

@@ -11,18 +11,18 @@
       <div align="center">
          <canvas id="game-canvas" width="512" height="384"></canvas>
       </div>
-      <script src="pixi.js-master/bin/pixi.dev.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0/pixi.min.js"></script>
       <script>
          function init() {
-            stage = new PIXI.Stage(0x66FF99);
-            renderer = new PIXI.autoDetectRenderer(
+            stage = new PIXI.Container();
+            renderer = PIXI.autoDetectRenderer(
                512,
                384,
                {view: document.getElementById("game-canvas")}
             );
 
             var farTexture = PIXI.Texture.fromImage("resources/bg-far.png");	
-            far = new PIXI.TilingSprite(farTexture, 512, 256);
+            far = new PIXI.extras.TilingSprite(farTexture, 512, 256);
             far.position.x = 0;
             far.position.y = 0;
             far.tilePosition.x = 0;
@@ -30,14 +30,14 @@
             stage.addChild(far);
 
             var midTexture = PIXI.Texture.fromImage("resources/bg-mid.png");
-            mid = new PIXI.TilingSprite(midTexture, 512, 256);
+            mid = new PIXI.extras.TilingSprite(midTexture, 512, 256);
             mid.position.x = 0;
             mid.position.y = 128;
             mid.tilePosition.x = 0;
             mid.tilePosition.y = 0;
             stage.addChild(mid);
 
-            requestAnimFrame(update);
+            requestAnimationFrame(update);
          }
 
          function update() {
@@ -46,7 +46,7 @@
             
             renderer.render(stage);
 
-            requestAnimFrame(update);
+            requestAnimationFrame(update);
          }
       </script>
    </body>

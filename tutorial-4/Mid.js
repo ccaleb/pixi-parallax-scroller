@@ -1,6 +1,6 @@
 function Mid() {
 	var texture = PIXI.Texture.fromImage("resources/bg-mid.png");
-	PIXI.TilingSprite.call(this, texture, 512, 256);
+	PIXI.extras.TilingSprite.call(this, texture, 512, 256);
 
 	this.position.x = 0;
 	this.position.y = 128;
@@ -10,8 +10,7 @@ function Mid() {
 	this.viewportX = 0;
 }
 
-Mid.constructor = Mid;
-Mid.prototype = Object.create(PIXI.TilingSprite.prototype);
+Mid.prototype = Object.create(PIXI.extras.TilingSprite.prototype);
 
 Mid.DELTA_X = 0.32;
 

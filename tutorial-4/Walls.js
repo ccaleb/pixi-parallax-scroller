@@ -1,5 +1,5 @@
 function Walls() {
-	PIXI.DisplayObjectContainer.call(this);
+	PIXI.Container.call(this);
 
 	this.pool = new WallSpritesPool();
 	this.createLookupTables();
@@ -10,8 +10,7 @@ function Walls() {
 	this.viewportSliceX = 0;
 }
 
-Walls.constructor = Walls;
-Walls.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
+Walls.prototype = Object.create(PIXI.Container.prototype);
 
 Walls.VIEWPORT_WIDTH = 512;
 Walls.VIEWPORT_NUM_SLICES = Math.ceil(Walls.VIEWPORT_WIDTH/WallSlice.WIDTH) + 1;

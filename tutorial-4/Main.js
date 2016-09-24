@@ -1,6 +1,6 @@
 function Main() {
-	this.stage = new PIXI.Stage(0x66FF99);
-	this.renderer = new PIXI.autoDetectRenderer(
+	this.stage = new PIXI.Container();
+	this.renderer = PIXI.autoDetectRenderer(
 		512,
 		384,
 		{view:document.getElementById("game-canvas")}
@@ -24,17 +24,19 @@ Main.prototype.update = function() {
 	}
 
 	this.renderer.render(this.stage);
-	requestAnimFrame(this.update.bind(this));
+	requestAnimationFrame(this.update.bind(this));
 };
 
 Main.prototype.loadSpriteSheet = function() {
-	var assetsToLoad = ["resources/wall.json", "resources/bg-mid.png", "resources/bg-far.png"];
-	loader = new PIXI.AssetLoader(assetsToLoad);
-	loader.onComplete = this.spriteSheetLoaded.bind(this);
+	var loader = PIXI.loader;
+	loader.add("wall", "resources/wall.json");
+	loader.add("bg-mid", "resources/bg-mid.png");
+	loader.add("bg-far", "resources/bg-far.png");
+	loader.once("complete", this.spriteSheetLoaded.bind(this));
 	loader.load();
 };
 
 Main.prototype.spriteSheetLoaded = function() {
 	this.scroller = new Scroller(this.stage);
-	requestAnimFrame(this.update.bind(this));
+	requestAnimationFrame(this.update.bind(this));
 };
